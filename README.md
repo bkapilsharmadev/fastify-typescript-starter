@@ -101,7 +101,7 @@ These are the tools and libraries required for development and testing purposes:
 ### **1. Clone the Repository**
 ```bash
 git clone https://github.com/bkapilsharmadev/fastify-typescript-sample.git
-cd fastify-typescript-sample
+cd fastify-typescript-starter
 ```
 
 ### **2. InstallDependencies**
