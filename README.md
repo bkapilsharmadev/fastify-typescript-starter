@@ -131,3 +131,100 @@ npm run build && npm start
 | `format`       | `prettier --write src/**/*.ts`                                | Formats the codebase using Prettier to maintain a consistent style.                                     |
 | `prepare`      | `husky`                                                       | Runs Husky setup to enable Git hooks for tasks like pre-commit linting or formatting.                   |
 
+
+## Project Configuration Files
+
+| **File**                | **Description**                                                                 |
+|--------------------------|---------------------------------------------------------------------------------|
+| `.gitignore`            | Specifies files and directories to ignore in the version control system (Git).  |
+| [`.prettierignore`](#prettier-ignore-file)       | Lists files and directories to ignore during Prettier formatting.               |
+| `.prettierrc`           | Configuration file for Prettier, defining code formatting rules.                |
+| `eslint.config.mjs`     | ESLint configuration file for linting the codebase.                             |
+| `package.json`          | Contains project metadata, dependencies, and scripts for running the project.   |
+| `tsconfig.dev.json`     | TypeScript configuration file for development builds.                           |
+| `tsconfig.json`         | Base TypeScript configuration file for the project.                             |
+| `tsconfig.prod.json`    | TypeScript configuration file for production builds.                            |
+| `typedoc.json`          | Configuration file for generating project documentation using Typedoc.          |
+
+
+## Prettier Ignore File
+
+The `.prettierignore` file specifies which files and directories should be ignored by Prettier during formatting. Below is the configuration used in this project:
+
+```plaintext
+node_modules/  # Ignore the node_modules folder
+dist/          # Ignore the compiled TypeScript output folder
+*.config.js    # Ignore configuration files with .config.js extension
+```
+
+## ESLint Configuration
+
+Below is the ESLint configuration file used in this project, with inline comments explaining each section:
+
+```javascript
+// @ts-check
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+import jest from "eslint-plugin-jest";
+import * as importPlugin from "eslint-plugin-import";
+
+export default tseslint.config(
+  {
+    // Ignore specific directories
+    ignores: ["node_modules", "build"],
+  },
+  {
+    // Apply to TypeScript files in the src directory
+    files: ["src/**/*.{ts,tsx}"], // Matches all TypeScript files
+  },
+  {
+    // Special settings for JavaScript files (CommonJS)
+    files: ["src/**/*.js"],
+    languageOptions: {
+      sourceType: "commonjs", // Set source type to CommonJS for JavaScript files
+    },
+  },
+  // Recommended ESLint and TypeScript configs
+  eslint.configs.recommended,
+  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
+
+  {
+    // Language options for TypeScript
+    languageOptions: {
+      parserOptions: {
+        projectService: true, // Enable project services for better type checking
+        tsconfigRootDir: import.meta.dirname, // Locate tsconfig file in the project root
+      },
+    },
+  },
+  {
+    files: ["tests/**/*.js"], // Specific rules for test files
+    ...jest.configs["flat/recommended"], // Apply Jest recommended configurations
+    rules: {
+      ...jest.configs["flat/recommended"].rules,
+      "jest/prefer-expect-assertions": "off", // Disable the rule that enforces expect assertions
+    },
+  },
+  {
+    // Include the import plugin
+    plugins: {
+      import: importPlugin, // Helps with managing imports and exports
+    },
+    // Custom rules
+    rules: {
+      "@typescript-eslint/no-unused-vars": "warn", // Warn for unused variables
+      "import/extensions": [
+        "error", // Enforce extensions in import statements
+        "always",
+        {
+          js: "always",
+          ts: "always",
+          jsx: "always",
+          tsx: "always",
+        },
+      ],
+    },
+  },
+);
+```
