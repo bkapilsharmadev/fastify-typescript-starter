@@ -94,6 +94,7 @@ These are the tools and libraries required for development and testing purposes:
 |----------------------------|-------------|----------------------------------------------------------|
 | `typedoc`                | ^0.27.2    | Documentation generator for TypeScript projects.         |
 
+---
 
 ## **Project Setup**
 
@@ -131,21 +132,99 @@ npm run build && npm start
 | `format`       | `prettier --write src/**/*.ts`                                | Formats the codebase using Prettier to maintain a consistent style.                                     |
 | `prepare`      | `husky`                                                       | Runs Husky setup to enable Git hooks for tasks like pre-commit linting or formatting.                   |
 
+---
 
 ## Project Configuration Files
 
 | **File**                | **Description**                                                                 |
 |--------------------------|---------------------------------------------------------------------------------|
-| `.gitignore`            | Specifies files and directories to ignore in the version control system (Git).  |
-| `.prettierignore`(#prettier-ignore-file)       | Lists files and directories to ignore during Prettier formatting.               |
-| `.prettierrc`           | Configuration file for Prettier, defining code formatting rules.                |
-| `eslint.config.mjs`     | ESLint configuration file for linting the codebase.                             |
-| `package.json`          | Contains project metadata, dependencies, and scripts for running the project.   |
-| `tsconfig.dev.json`     | TypeScript configuration file for development builds.                           |
-| `tsconfig.json`         | Base TypeScript configuration file for the project.                             |
-| `tsconfig.prod.json`    | TypeScript configuration file for production builds.                            |
-| `typedoc.json`          | Configuration file for generating project documentation using Typedoc.          |
+| `.gitignore`                 | Specifies files and directories to ignore in the version control system (Git).  |
+| [`tsconfig.json`](#typescript-configuration)         | Base TypeScript configuration file for the project.                             |
+| [`tsconfig.dev.json`](#typescript-development-configuration)     | TypeScript configuration file for development builds.                           |
+| [`tsconfig.prod.json`](#typescript-production-configuration)    | TypeScript configuration file for production builds.                            |
+| [`.prettierignore`](#prettier-ignore-file)       | Lists files and directories to ignore during Prettier formatting.               |
+| [`.prettierrc`](#prettier-configuration)           | Configuration file for Prettier, defining code formatting rules.                |
+| [`eslint.config.mjs`](#eslint-configuration)     | ESLint configuration file for linting the codebase.                             |
+| [`package.json`](#packagejson-configuration)          | Contains project metadata, dependencies, and scripts for running the project.   |
+| [`typedoc.json`](#typedoc-configuration)          | Configuration file for generating project documentation using Typedoc.          |
 
+## TypeScript Configuration
+
+The `tsconfig.json` file is the core configuration for TypeScript in the project. Below is the configuration used, along with detailed explanations:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ESNext", // Specifies the JavaScript version to compile to (latest features).
+    "module": "ESNext", // Specifies the module system to use (ES Modules).
+    "moduleResolution": "node", // Resolves modules using Node.js conventions.
+    "lib": ["ESNext"], // Includes the latest ECMAScript features in the library.
+    "baseUrl": "./", // Base directory for resolving non-relative module imports.
+    "paths": { // Custom path aliases for cleaner imports.
+      "@src/*": ["src/*"],
+      "@tests/*": ["tests/*"],
+      "@routes/*": ["src/routes/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@services/*": ["src/services/*"],
+      "@models/*": ["src/models/*"],
+      "@config/*": ["src/config/*"],
+      "@utils/*": ["src/utils/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@plugins/*": ["src/plugins/*"],
+      "@logs/*": ["src/logs/*"],
+      "@database/*": ["src/database/*"]
+    },
+    "rootDir": "./src", // Specifies the root directory of the source files.
+    "outDir": "./dist", // Directory for the compiled JavaScript output.
+    "esModuleInterop": true, // Enables interop between CommonJS and ES Modules.
+    "forceConsistentCasingInFileNames": true, // Enforces consistent file name casing across imports.
+    "strict": true, // Enables strict type-checking for better reliability.
+    "skipLibCheck": true, // Skips type checking of declaration files for faster builds.
+    "resolveJsonModule": true, // Allows importing `.json` files.
+    "isolatedModules": true, // Ensures each file is treated as a separate module (for compatibility with tools like Babel).
+    "allowSyntheticDefaultImports": true // Enables default imports for modules without default exports.
+  },
+  "exclude": [
+    "node_modules", // Excludes the `node_modules` directory from compilation.
+    "dist", // Excludes the output directory to avoid re-compiling generated files.
+    "tests" // Excludes test files from the build process.
+  ]
+}
+```
+
+## TypeScript Development Configuration
+
+The `tsconfig.dev.json` file extends the base `tsconfig.json` and provides additional options tailored for development. Below is the configuration:
+
+```json
+{
+  "extends": "./tsconfig.json", // Inherits settings from the base tsconfig.json
+  "compilerOptions": {
+    "sourceMap": true // Generates source maps for easier debugging during development
+  },
+  "include": [
+    "src/**/*.ts", // Includes all TypeScript files in the `src` directory
+    "test/**/*.ts" // Includes all TypeScript files in the `test` directory
+  ]
+}
+```
+
+## TypeScript Production Configuration
+
+The `tsconfig.prod.json` file extends the base `tsconfig.json` and provides additional configurations optimized for production builds. Below is the configuration:
+
+```json
+{
+  "extends": "./tsconfig.json", // Inherits settings from the base tsconfig.json
+  "compilerOptions": {
+    "sourceMap": false, // Disables source map generation for production to reduce output size
+    "removeComments": true // Removes all comments from the compiled JavaScript files
+  },
+  "include": [
+    "src/**/*.ts" // Includes all TypeScript files in the `src` directory for compilation
+  ]
+}
+```
 
 ## Prettier Ignore File
 
@@ -155,6 +234,32 @@ The `.prettierignore` file specifies which files and directories should be ignor
 node_modules/  # Ignore the node_modules folder
 dist/          # Ignore the compiled TypeScript output folder
 *.config.js    # Ignore configuration files with .config.js extension
+```
+
+## Prettier Configuration
+
+The project uses a custom Prettier configuration defined in the `.prettierrc` file. Below is the configuration with explanations for each option:
+
+```json
+{
+  "arrowParens": "always", // Always include parentheses for arrow functions (e.g., (x) => x)
+  "bracketSameLine": false, // Put closing brackets of JSX tags on a new line
+  "bracketSpacing": true,   // Add spaces inside object literals (e.g., { foo: bar })
+  "semi": true,             // Add semicolons at the end of statements
+  "experimentalTernaries": false, // Disable experimental support for improved ternary formatting
+  "singleQuote": false,     // Use double quotes instead of single quotes
+  "quoteProps": "as-needed", // Add quotes around object property names only when necessary
+  "trailingComma": "all",   // Add trailing commas wherever possible (e.g., in objects, arrays, etc.)
+  "singleAttributePerLine": false, // Allow multiple attributes on the same line in JSX
+  "vueIndentScriptAndStyle": false, // Do not indent `<script>` and `<style>` tags in Vue files
+  "proseWrap": "preserve",  // Do not change wrapping in Markdown files
+  "insertPragma": false,    // Do not insert @format pragma at the top of files
+  "printWidth": 80,         // Wrap lines that exceed 80 characters
+  "requirePragma": false,   // Do not require @format pragma for formatting
+  "tabWidth": 2,            // Use 2 spaces per indentation level
+  "useTabs": false,         // Use spaces instead of tabs for indentation
+  "embeddedLanguageFormatting": "auto" // Automatically format embedded code (e.g., HTML in JSX)
+}
 ```
 
 ## ESLint Configuration
@@ -227,4 +332,68 @@ export default tseslint.config(
     },
   },
 );
+```
+
+## Package.json Configuration
+
+The `package.json` file defines the metadata, scripts, and configuration for the project. Below is the configuration used in this project:
+
+```json
+{
+  "type": "module", // Specifies ES Module syntax
+  "name": "fastify-typescript-starter", // Project name
+  "version": "1.0.0", // Project version
+  "description": "A starter template for building robust server-side applications using Fastify with TypeScript. This repository is designed for scalability, readability, and best practices. Includes integration with Prettier, ESLint, and Typedoc for a well-maintained codebase.",
+  "main": "dist/index.js", // Entry point for the built application
+  "scripts": {
+    "clean": "rimraf dist", // Cleans the `dist` folder
+    "build:dev": "tsc -p tsconfig.dev.json && tsc-alias", // Builds the app for development
+    "build": "tsc -p tsconfig.prod.json && tsc-alias", // Builds the app for production
+    "start": "node dist/index.js", // Runs the application
+    "dev": "tsc-watch -p tsconfig.dev.json --onSuccess \"npm run start:alias\"", // Starts the app in watch mode for development
+    "start:alias": "tsc-alias -p tsconfig.dev.json && nodemon dist/index.js", // Adds support for path aliases during development
+    "lint": "eslint src", // Lints the source code
+    "format": "prettier --write src/**/*.ts", // Formats the source code
+    "prepare": "husky" // Runs Husky to manage Git hooks
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "npm run format", // Formats staged files before commit
+      "npm run lint" // Lints staged files before commit
+    ]
+  },
+  "keywords": [], // Placeholder for project keywords
+  "author": "", // Placeholder for the author's name
+  "license": "ISC" // Project license
+}
+```
+
+## Typedoc Configuration
+
+The `typedoc.json` file defines the configuration for generating documentation using [Typedoc](https://typedoc.org). Below is the configuration used in this project:
+
+```json
+{
+  "entryPoints": [
+    "src/plugins/error-handler.ts",
+    "src/hooks/request-id.ts",
+    "src/utils/logger.ts",
+    "src/utils/filesystem.ts",
+    "src/utils/error/AppError.ts"
+  ],
+  "out": "docs/typedoc", // Output directory for the generated documentation
+  "readme": "./docs/README.md", // Specifies a custom README file for the documentation
+  "tsconfig": "tsconfig.json", // Specifies the TypeScript configuration file to use
+  "exclude": [
+    "**/node_modules/**", // Excludes the `node_modules` folder
+    "**/dist/**", // Excludes the `dist` folder
+    "**/test/**" // Excludes the `test` folder
+  ],
+  "name": "Fastify Typescript Starter", // The name of the project displayed in the documentation
+  "includeVersion": true, // Includes the project version in the documentation
+  "excludePrivate": true, // Excludes private members from the documentation
+  "excludeProtected": true, // Excludes protected members from the documentation
+  "excludeExternals": true, // Excludes external modules from the documentation
+  "commentStyle": "all" // Includes all comments in the output documentation
+}
 ```
