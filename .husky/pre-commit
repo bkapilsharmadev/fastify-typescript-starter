@@ -1,0 +1,15 @@
+# Run lint-staged to ensure staged files are linted and formatted
+npx lint-staged
+if [ $? -ne 0 ]; then
+    echo "Commit rejected: Linting or formatting failed."
+    exit 1
+fi
+
+# Check for large commits
+MAX_LINES=300
+ADDED_LINES=$(git diff --cached --numstat | awk '{added += $1} END {print added}')
+
+if [ "$ADDED_LINES" -gt "$MAX_LINES" ]; then
+    echo "Commit rejected: $ADDED_LINES lines added (limit is $MAX_LINES). Please split your changes into smaller commits."
+    exit 1
+fi
