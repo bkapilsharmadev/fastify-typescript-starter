@@ -28,7 +28,6 @@ These are the essential libraries required for running the application in produc
 | `mongodb`            | ^5.9.2     | MongoDB driver for Node.js.                                                                        |
 | `nanoid`             | ^5.0.8     | A tiny, secure URL-friendly unique string ID generator.                                            |
 | `pg`                 | ^8.13.1    | PostgreSQL client for Node.js.                                                                     |
-| `pino-pretty`        | ^13.0.0    | Prettifies `pino` logs for easier readability during development.                                  |
 | `rotating-file-stream` | ^3.2.5   | File stream rotation for logging.                                                                  |
 | `typeorm`            | ^0.3.20    | A modern ORM for TypeScript and JavaScript (supports PostgreSQL, MySQL, etc.).                     |
 | `uuid`               | ^11.0.3    | A library for generating unique identifiers.                                                       |
@@ -40,7 +39,7 @@ These are the essential libraries required for running the application in produc
 
 These are the tools and libraries required for development and testing purposes:
 
-### **Code Quality & Linting**
+### **Code Quality, Linting & Logging**
 
 | **Dependency**              | **Version** | **Description**                                                                 |
 |------------------------------|-------------|---------------------------------------------------------------------------------|
@@ -49,6 +48,7 @@ These are the tools and libraries required for development and testing purposes:
 | `eslint-plugin-import`     | ^2.31.0    | Ensures proper imports and prevents issues with ES module syntax.             |
 | `eslint-import-resolver-typescript` | ^3.6.3 | Resolves TypeScript paths for ESLint.                                         |
 | `typescript-eslint`        | ^8.16.0    | ESLint plugin for TypeScript linting rules.                                    |
+| `pino-pretty`        | ^13.0.0    | Prettifies `pino` logs for easier readability during development.                                  |
 
 ### **Code Formatting**
 
