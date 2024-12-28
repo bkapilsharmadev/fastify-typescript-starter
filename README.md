@@ -137,7 +137,7 @@ npm run build && npm start
 | **File**                | **Description**                                                                 |
 |--------------------------|---------------------------------------------------------------------------------|
 | `.gitignore`            | Specifies files and directories to ignore in the version control system (Git).  |
-| [`.prettierignore`](#prettier-ignore-file)       | Lists files and directories to ignore during Prettier formatting.               |
+| `.prettierignore`(#prettier-ignore-file)       | Lists files and directories to ignore during Prettier formatting.               |
 | `.prettierrc`           | Configuration file for Prettier, defining code formatting rules.                |
 | `eslint.config.mjs`     | ESLint configuration file for linting the codebase.                             |
 | `package.json`          | Contains project metadata, dependencies, and scripts for running the project.   |
