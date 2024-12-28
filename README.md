@@ -155,7 +155,7 @@ The `tsconfig.json` file is the core configuration for TypeScript in the project
 ```json
 {
   "compilerOptions": {
-    "target": "ESNext", - Specifies the JavaScript version to compile to (latest features).
+    "target": "ESNext", // Specifies the JavaScript version to compile to (latest features).
     "module": "ESNext", // Specifies the module system to use (ES Modules).
     "moduleResolution": "node", // Resolves modules using Node.js conventions.
     "lib": ["ESNext"], // Includes the latest ECMAScript features in the library.
